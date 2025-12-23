@@ -14,3 +14,5 @@ export const CLIENT_ID = process.env.CLIENT_ID || '';
 export const TESTING_BOT_TOKEN = process.env.SECONDARY_DISCORD_TOKEN || '';
 export const TESTING_CLIENT_ID = process.env.TESTING_CLIENT_ID || '';
 export const TESTING_APPLICATION_ID = process.env.TESTING_APPLICATION_ID || '';
+
+// Channel IDs to filter messages

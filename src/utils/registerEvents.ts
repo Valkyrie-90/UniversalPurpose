@@ -8,7 +8,7 @@ interface Event {
     execute: (...args: any[]) => void | Promise<void>;
 }
 
-export function registerEvents(client: Client): void {
+export async function registerEvents(client: Client): Promise<void> {
     const eventsFolder = path.resolve(__dirname, '..', 'events');
     if (!fs.existsSync(eventsFolder)) {
         console.warn(`Events folder not found: ${eventsFolder}`);
@@ -21,7 +21,7 @@ export function registerEvents(client: Client): void {
 
     for (const file of eventFiles) {
         const filePath = path.join(eventsFolder, file);
-        const imported = require(filePath);
+        const imported = await import(filePath);
         // Support both `module.exports = { ... }` and `export default { ... }` and direct function exports
         let event: Event = (imported && imported.default) ? imported.default : imported;
 

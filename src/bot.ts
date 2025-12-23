@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits, Collection, ApplicationCommandData } from "d
 import { loadCommands } from "./utils/loadCommands";
 import { registerEvents } from "./utils/registerEvents";
 import { main as deployCommands } from "./utils/deployCommands";
+import { loadFlaggedTerms } from './utils/loadFlaggedTerms';
 import { TESTING_BOT_TOKEN } from "./config";
 
 // Define the command structure
@@ -26,10 +27,13 @@ client.commands = new Collection();
 // Load commands and register events
 await loadCommands(client);
 await deployCommands();
-registerEvents(client);
+await registerEvents(client);
+
+// Load flagged terms from storage
+const flaggedTerms = loadFlaggedTerms();
 
 // Log in to Discord with the bot token
-client.login(TESTING_BOT_TOKEN);
+await client.login(TESTING_BOT_TOKEN);
 
 export default client;
-export { Command };
+export { Command, flaggedTerms };
