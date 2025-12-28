@@ -29,6 +29,23 @@ function createGlobalBanEmbed(interaction: Interaction, args: string[]) : EmbedB
     return globalBanEmbed;
 }
 
+function createGlobalPardonEmbed(interaction: Interaction, args: string[]) : EmbedBuilder {
+    const globalPardonEmbed = new EmbedBuilder()
+        .setTitle('Global Pardon Issued')
+        .setDescription(`A global pardon has been issued to <@${args[0]}>.`)
+        .addFields(
+            { name: 'User', value: `<@${args[0]}>`, inline: false },
+            { name: 'Reason', value: args[1].length > 1024 ? `${args[1].slice(0, 1021)}...` : args[1], inline: false },
+            { name: 'Moderator', value: interaction.user.tag, inline: false },
+            { name: 'Origin Server', value: interaction.guild?.name ?? 'Direct Message', inline: false },
+        )
+        .setColor(0xB0008E)
+        .setFooter({ text: `Issued by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+        .setTimestamp();
+    
+    return globalPardonEmbed;
+}
+
 function createFlaggedMessageEmbed(message: Message, term: string): EmbedBuilder {
     const flaggedMessageEmbed = new EmbedBuilder()
         .setTitle('Flagged Message')
@@ -45,4 +62,38 @@ function createFlaggedMessageEmbed(message: Message, term: string): EmbedBuilder
     return flaggedMessageEmbed;
 }
 
-export { createNoPermsEmbed, createGlobalBanEmbed, createFlaggedMessageEmbed };
+function createBanEmbed(interaction: Interaction, args: string[]) : EmbedBuilder {
+    const banEmbed = new EmbedBuilder()
+        .setTitle('User Banned')
+        .setDescription(`A ban has been issued to <@${args[0]}>.`)
+        .addFields(
+            { name: 'User', value: `<@${args[0]}>`, inline: false },
+            { name: 'Reason', value: args[1].length > 1024 ? `${args[1].slice(0, 1021)}...` : args[1], inline: false },
+            { name: 'Moderator', value: interaction.user.tag, inline: false },
+            { name: 'Origin Server', value: interaction.guild?.name ?? 'Direct Message', inline: false },
+        )
+        .setColor(0xff0000)
+        .setFooter({ text: `Issued by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+        .setTimestamp();
+    
+    return banEmbed;
+}
+
+function createPardonEmbed(interaction: Interaction, args: string[]) : EmbedBuilder {
+    const pardonEmbed = new EmbedBuilder()
+        .setTitle('Pardon Issued')
+        .setDescription(`A pardon has been issued to <@${args[0]}>.`)
+        .addFields(
+            { name: 'User', value: `<@${args[0]}>`, inline: false },
+            { name: 'Reason', value: args[1].length > 1024 ? `${args[1].slice(0, 1021)}...` : args[1], inline: false },
+            { name: 'Moderator', value: interaction.user.tag, inline: false },
+            { name: 'Origin Server', value: interaction.guild?.name ?? 'Direct Message', inline: false },
+        )
+        .setColor(0xB0008E)
+        .setFooter({ text: `Issued by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+        .setTimestamp();
+    
+    return pardonEmbed;
+}
+
+export { createNoPermsEmbed, createGlobalBanEmbed, createFlaggedMessageEmbed, createGlobalPardonEmbed, createBanEmbed, createPardonEmbed };

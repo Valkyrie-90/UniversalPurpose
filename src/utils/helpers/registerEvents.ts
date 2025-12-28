@@ -8,7 +8,7 @@ interface Event {
     execute: (...args: any[]) => void | Promise<void>;
 }
 
-export async function registerEvents(client: Client): Promise<void> {
+async function registerEvents(client: Client): Promise<void> {
     const eventsFolder = path.resolve(__dirname, '..', 'events');
     if (!fs.existsSync(eventsFolder)) {
         console.warn(`Events folder not found: ${eventsFolder}`);
@@ -60,3 +60,5 @@ export async function registerEvents(client: Client): Promise<void> {
         console.log(`Registered event: ${event.name}`);
     }
 }
+
+export { registerEvents };

@@ -7,7 +7,7 @@ import { pathToFileURL } from 'url';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
-import { TESTING_BOT_TOKEN, TESTING_CLIENT_ID, TESTING_APPLICATION_ID } from '../config';
+import { TESTING_BOT_TOKEN, TESTING_CLIENT_ID, TESTING_APPLICATION_ID } from '../../config';
 
 const config = {
     token: TESTING_BOT_TOKEN,
@@ -15,7 +15,7 @@ const config = {
     applicationId: TESTING_APPLICATION_ID
 };
 
-async function main() {
+async function deployCommands() {
     const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 
     const foldersPath = path.resolve(__dirname, "..", "commands");
@@ -84,4 +84,4 @@ async function main() {
     }
 }
 
-export { main };
+export { deployCommands };

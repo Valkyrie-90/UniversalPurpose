@@ -1,8 +1,8 @@
 import { Client, GatewayIntentBits, Collection, ApplicationCommandData } from "discord.js";
-import { loadCommands } from "./utils/loadCommands";
-import { registerEvents } from "./utils/registerEvents";
-import { main as deployCommands } from "./utils/deployCommands";
-import { loadFlaggedTerms } from './utils/loadFlaggedTerms';
+import { loadCommands } from "./utils/commands/loadCommands";
+import { registerEvents } from "./utils/helpers/registerEvents";
+import { deployCommands } from "./utils/commands/deployCommands";
+import { loadFlaggedTerms } from './utils/helpers/loadFlaggedTerms';
 import { TESTING_BOT_TOKEN } from "./config";
 
 // Define the command structure
