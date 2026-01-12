@@ -17,7 +17,7 @@ function loadMonitoredUsersFromStorage(): void {
         try {
             const parsedData: string[] = JSON.parse(data);
             parsedData.forEach((userId) => monitoredUsers.add(userId));
-            console.log("monitored_users loaded from monitored users.");
+            console.log("Monitored users loaded from storage.");
         } catch (parseErr) {
             console.error("Error parsing monitored users file:", parseErr);
         }
@@ -39,7 +39,7 @@ function addToMonitoredUsers(userId: string): void {
             if (err) {
                 console.error("Error saving monitored users to storage:", err);
             } else {
-                console.log("monitored users updated in storage.");
+                console.log("Monitored users updated in storage.");
             }
         }
     );
@@ -56,7 +56,7 @@ function removeFromMonitoredUsers(userId: string): void {
             if (err) {
                 console.error("Error saving monitored_users to storage:", err);
             } else {
-                console.log("monitored_users updated in storage.");
+                console.log("Monitored users updated in storage.");
             }
         }
     );

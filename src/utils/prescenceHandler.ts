@@ -16,7 +16,6 @@ async function presenceHandler(client: Client): Promise<void> {
     // Collect guild names
     const botGuilds: string[] = [];
 
-    // @ts-expect-error discord.js types are sometimes out of date
     for (const [, guild] of guilds) {
         const g = await guild.fetch();
         botGuilds.push(g.name);

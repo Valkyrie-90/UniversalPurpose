@@ -1,0 +1,11 @@
+{
+    "logChannelID": "1458496312134598737",
+    "commandsChannelID": "1458496313275580450",
+    "botMasterRoleID": "1458496314072367157",
+    "globalBanRoleID": "1458496315590836298",
+    "privateGuild": false,
+    "filteredChannelIDs": [
+        "1311048769508343889"
+    ],
+    "disabledCommands": []
+}

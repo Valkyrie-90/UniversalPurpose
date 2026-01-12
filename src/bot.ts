@@ -1,9 +1,11 @@
 import { Client, GatewayIntentBits, Collection, ApplicationCommandData } from "discord.js";
-import { loadCommands } from "./utils/commands/loadCommands";
 import { registerEvents } from "./utils/helpers/registerEvents";
 import { deployCommands } from "./utils/commands/deployCommands";
+import { registerCommands } from "./utils/commands/registerCommands";
 import { loadFlaggedTerms } from './utils/helpers/loadFlaggedTerms';
-import { TESTING_BOT_TOKEN } from "./config";
+import { registerButtons } from "./utils/helpers/registerButtons";
+import { registerModals } from "./utils/helpers/registerModals";
+import { testingConfig } from "./config";
 
 // Define the command structure
 interface Command {
@@ -23,17 +25,23 @@ const client = new Client({
 
 // Initialize the commands collection
 client.commands = new Collection();
+client.buttons = new Collection();
+client.events = new Collection();
+client.modals = new Collection();
 
 // Load commands and register events
-await loadCommands(client);
+await registerCommands(client);
 await deployCommands();
 await registerEvents(client);
+await registerButtons(client);
+await registerModals(client);
 
 // Load flagged terms from storage
 const flaggedTerms = loadFlaggedTerms();
 
 // Log in to Discord with the bot token
-await client.login(TESTING_BOT_TOKEN);
+await client.login(testingConfig.token);
 
 export default client;
 export { Command, flaggedTerms };
+

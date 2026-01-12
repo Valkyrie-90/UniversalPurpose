@@ -1,87 +1,66 @@
-// deployCommands.ts
-// Note: ensure tsconfig has "esModuleInterop": true and "resolveJsonModule": true
-
-import fs from 'node:fs';
-import path from 'node:path';
-import { pathToFileURL } from 'url';
+// External imports
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
+
+// Type imports
 import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
-import { TESTING_BOT_TOKEN, TESTING_CLIENT_ID, TESTING_APPLICATION_ID } from '../../config';
 
-const config = {
-    token: TESTING_BOT_TOKEN,
-    clientId: TESTING_CLIENT_ID,
-    applicationId: TESTING_APPLICATION_ID
-};
+// Local imports
+import { testingConfig as config } from '../../config';
 
-async function deployCommands() {
-    const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
+import {
+    registerSetupCommandGlobally,
+    collectBaseCommands,
+    filterDisabledCommands
+} from './index';
 
-    const foldersPath = path.resolve(__dirname, "..", "commands");
-    if (!fs.existsSync(foldersPath)) {
-        console.warn(`Commands folder not found at ${foldersPath}`);
-        return;
-    }
+import {
+    readGuildIds,
+    readGuildCommands
+} from "../../utils/guilds";
 
-    // Read entries directly in the commands folder; support both flat files (commands/*.ts)
-    // and grouped commands in subfolders (commands/<group>/*.ts)
-    const entries = fs.readdirSync(foldersPath);
+/**
+* Deploys commands to a single guild
+*/
+async function deployToGuild(
+	rest: REST,
+	guildId: string,
+	baseCommands: RESTPostAPIApplicationCommandsJSONBody[]
+): Promise<void> {
+	const allCommands = await readGuildCommands(guildId, baseCommands);
+	const enabledCommands = filterDisabledCommands(allCommands, guildId);
+	
+	const data = await rest.put(
+		Routes.applicationGuildCommands(config.applicationId, guildId),
+		{ body: enabledCommands }
+	);
 
-    for (const entry of entries) {
-        const entryPath = path.join(foldersPath, entry);
-        const stat = fs.statSync(entryPath);
+	console.log(`Successfully reloaded ${(data as any).length} application (/) commands in guild: ${guildId}`);
+}
 
-        if (stat.isDirectory()) {
-            const commandFiles = fs
-                .readdirSync(entryPath)
-                .filter((file) => file.endsWith('.ts') || file.endsWith('.js'));
+/**
+* Main function to deploy commands to all registered guilds
+*/
+async function deployCommands(): Promise<void> {
+	await registerSetupCommandGlobally();
+	
+	const baseCommands = await collectBaseCommands();
+	const guildIds = readGuildIds();
+	
+	if (guildIds.length === 0) {
+		console.warn("No guild IDs found to deploy commands to.");
+		return;
+	}
 
-            for (const file of commandFiles) {
-                const filePath = path.join(entryPath, file);
-                try {
-                    const mod = await import(pathToFileURL(filePath).toString());
-                    const command = (mod && (mod.default ?? mod)) as any;
-                    if (command && 'data' in command && typeof command.data?.toJSON === 'function') {
-                        commands.push(command.data.toJSON());
-                    } else {
-                        console.warn(
-                            `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
-                        );
-                    }
-                } catch (err) {
-                    console.error(`Failed loading command ${filePath}:`, err);
-                }
-            }
-        } else if (stat.isFile() && (entry.endsWith('.ts') || entry.endsWith('.js'))) {
-            const filePath = entryPath;
-            try {
-                const mod = await import(pathToFileURL(filePath).toString());
-                const command = (mod && (mod.default ?? mod)) as any;
-                if (command && 'data' in command && typeof command.data?.toJSON === 'function') {
-                    commands.push(command.data.toJSON());
-                } else {
-                    console.warn(
-                        `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
-                    );
-                }
-            } catch (err) {
-                console.error(`Failed loading command ${filePath}:`, err);
-            }
-        }
-    }
+	const rest = new REST({ version: '10' }).setToken(config.token);
 
-    const rest: REST = new REST({ version: '10' }).setToken(config.token);
-
-    try {
-        console.log(`Started refreshing ${commands.length} application (/) commands.`);
-        const data = await rest.put(Routes.applicationCommands(config.applicationId), {
-            body: commands
-        });
-        console.log(`Successfully reloaded ${(data as any).length} application (/) commands.`);
-    } catch (error) {
-        console.error(error);
-    }
+	for (const guildId of guildIds) {
+		try {
+			await deployToGuild(rest, guildId, baseCommands);
+		} catch (error) {
+			console.error(`Failed to deploy commands to guild ${guildId}:`, error);
+		}
+	}
 }
 
 export { deployCommands };

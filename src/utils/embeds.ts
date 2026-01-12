@@ -1,5 +1,15 @@
 import { EmbedBuilder, Interaction, Message } from 'discord.js';
 
+type SetupInfo = {
+    logChannelID: string | null;
+    commandsChannelID: string | null;
+    botMasterRoleID: string | null;
+    globalBanRoleID: string | null;
+    privateGuild: boolean;
+    filteredChannelIDs: string[];
+    disabledCommands: string[];
+};
+
 function createNoPermsEmbed(interaction: Interaction): EmbedBuilder {
     const noPermsEmbed = new EmbedBuilder()
         .setTitle('Insufficient Permissions')
@@ -52,8 +62,8 @@ function createFlaggedMessageEmbed(message: Message, term: string): EmbedBuilder
         .setDescription(`UniversalPurpose has detected a user using a flagged term at ${message.url}.`)
         .addFields(
             { name: 'User', value: message.author.tag, inline: false },
-            { name: 'Message', value: message.content, inline: false },
-            { name: 'Flagged Term', value: term, inline: false },
+            { name: 'Message', value: `||${message.content}||`, inline: false },
+            { name: 'Flagged Term', value: `||${term}||`, inline: false },
         )
         .setColor(0xff0000)
         .setFooter({ text: message.client.user.username, iconURL: message.client.user.displayAvatarURL() })
@@ -96,4 +106,22 @@ function createPardonEmbed(interaction: Interaction, args: string[]) : EmbedBuil
     return pardonEmbed;
 }
 
-export { createNoPermsEmbed, createGlobalBanEmbed, createFlaggedMessageEmbed, createGlobalPardonEmbed, createBanEmbed, createPardonEmbed };
+function createSetupEmbed(interaction: Interaction, info: SetupInfo): EmbedBuilder {
+    const setupEmbed = new EmbedBuilder()
+        .setTitle('Guild Setup Complete')
+        .setDescription('This guild has been successfully setup for use with UniversalPurpose!')
+        .addFields(
+            { name: 'Log Channel', value: info.logChannelID ? `<#${info.logChannelID}>` : 'Not set', inline: false },
+            { name: 'Commands Channel', value: info.commandsChannelID ? `<#${info.commandsChannelID}>` : 'Not set', inline: false },
+            { name: 'Bot Master Role', value: info.botMasterRoleID ? `<@&${info.botMasterRoleID}>` : 'Not set', inline: false },
+            { name: 'Global Ban Role', value: info.globalBanRoleID ? `<@&${info.globalBanRoleID}>` : 'Not set', inline: false },
+            { name: 'Private Guild', value: info.privateGuild ? 'Yes' : 'No', inline: false },
+        )
+        .setColor(0x006400)
+        .setFooter({ text: `${interaction.client.user.displayName}`, iconURL: interaction.client.user.displayAvatarURL() })
+        .setTimestamp();
+    
+    return setupEmbed;
+}
+
+export { createNoPermsEmbed, createGlobalBanEmbed, createFlaggedMessageEmbed, createGlobalPardonEmbed, createBanEmbed, createPardonEmbed, createSetupEmbed };

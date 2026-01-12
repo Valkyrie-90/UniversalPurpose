@@ -9,7 +9,7 @@ interface Event {
 }
 
 async function registerEvents(client: Client): Promise<void> {
-    const eventsFolder = path.resolve(__dirname, '..', 'events');
+    const eventsFolder = path.resolve(__dirname, "..", "..", "events");
     if (!fs.existsSync(eventsFolder)) {
         console.warn(`Events folder not found: ${eventsFolder}`);
         return;

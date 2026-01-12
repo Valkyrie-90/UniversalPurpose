@@ -7,7 +7,7 @@ interface FlaggedTerms {
 
 function loadFlaggedTerms(): string[] {
     try {
-        const filePath = path.resolve(__dirname, "..", "storage", "flagged_terms.json");
+        const filePath = path.resolve(__dirname, "..", "..", "storage", "flagged_terms.json");
         const data = fs.readFileSync(filePath, "utf8");
         const parsedData: FlaggedTerms = JSON.parse(data);
 

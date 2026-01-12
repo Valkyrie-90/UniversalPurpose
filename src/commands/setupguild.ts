@@ -1,17 +1,31 @@
+// Import necessary modules from discord.js and Bun
 import { SlashCommandBuilder, ChannelType, PermissionFlagsBits, Colors, MessageFlags } from 'discord.js';
 import { ChatInputCommandInteraction } from 'discord.js';
-import { createNoPermsEmbed } from '../utils/embeds';
 import * as fs from 'fs';
 import path from 'path';
 
+// Relative imports for local modules
+import { writeServerConfig } from '../utils/jsonhelpers/writeServerConfig';
+import { createNoPermsEmbed, createSetupEmbed } from '../utils/embeds';
+
+type SetupInfo = {
+    logChannelID: string | null;
+    commandsChannelID: string | null;
+    botMasterRoleID: string | null;
+    globalBanRoleID: string | null;
+    privateGuild: boolean;
+    filteredChannelIDs: string[];
+    disabledCommands: string[];
+};
 
 export default {
     data: new SlashCommandBuilder()
         .setName("setupguild")
         .setDescription("Allows you to set up the current guild with specific settings & configurations.")
         .addStringOption(option => option
-            .setName("Filtered Channels")
-            .setDescription("Enter a comma delimited list of channel IDs to be filtered for flagged terms, type 'none' to disable.")
+            .setName("filtered-channels")
+            .setDescription("Enter a comma delimited list of channel IDs to be filtered, type 'none' to disable.")
+            .setMaxLength(100)
             .setRequired(true)
         ),
     async execute(interaction: ChatInputCommandInteraction) {
@@ -157,27 +171,34 @@ export default {
         }
 
         // Get filtered channels from the command options
-        const filteredChannelsOption = interaction.options.getString("Filtered Channels", true);
+        const filteredChannelsOption = interaction.options.getString("filtered-channels", true);
         let filteredChannelIDs: string[] = [];
         if (filteredChannelsOption.toLowerCase() !== "none") {
             filteredChannelIDs = filteredChannelsOption.split(",").map(id => id.trim());
         }
 
-        // Create the config file
-        fs.writeFileSync(`${guildsPath}/${interaction.guild?.id}/settings/config.json`, JSON.stringify({
+        // Prepare setup info for the embed
+        const setupInfo: SetupInfo = {
             logChannelID: logChannel?.id || null,
             commandsChannelID: commandsChannel?.id || null,
             botMasterRoleID: botMasterRole?.id || null,
             globalBanRoleID: banHammerRole?.id || null,
-            privateGuild: true, // If servers are included in the global server list
-            filteredChannelIDs: [], // Channels that are filtered for flagged terms
-        }, null, 4), { encoding: "utf8", flag: "w" } as fs.WriteFileOptions);
+            privateGuild: false,
+            filteredChannelIDs: filteredChannelIDs,
+            disabledCommands: [],
+        };
+
+        // Create the config file
+        writeServerConfig(interaction.guild.id, setupInfo);
+
+        const setupEmbed = createSetupEmbed(interaction, setupInfo);
 
         // Reply to the interaction
-        await interaction.reply(
-            "Successfully set up this guild for use with UniversalPurpose!"
-        ).catch(console.error);
+        await interaction.reply({
+            embeds: [setupEmbed],
+            flags: MessageFlags.Ephemeral
+        }).catch(console.error);
 
-        console.log(`[SETUP] Guild ${interaction.guild?.name} (${interaction.guild?.id}) has been set up by ${interaction.user.tag} (${interaction.user.id}).`);
+        console.log(`[SETUP] ${interaction.guild?.name} (${interaction.guild?.id}) has been set up by ${interaction.user.tag} (${interaction.user.id}).`);
     }
 };
