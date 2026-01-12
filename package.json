@@ -1,0 +1,10 @@
+{
+  "name":"universal-purpose",
+  "version":"1.0.0",
+  "description":"A versatile Discord bot with multiple functionalities.",
+  "main":"src/bot.ts",
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.2.3"
+  }
+}
