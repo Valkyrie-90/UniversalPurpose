@@ -3,8 +3,8 @@ import env from 'dotenv';
 env.config();
 
 // Bot role names
-export const BOT_MASTER_ROLE_NAME = process.env.BOT_MASTER_ROLE_NAME || 'UP | Bot Master';
-export const GBAN_ROLE_NAME = process.env.GBAN_ROLE_NAME || 'UP | Global Ban Permission';
+export const BOT_MASTER_ROLE_NAME = process.env.BOT_MASTER_ROLE_NAME
+export const GBAN_ROLE_NAME = process.env.GBAN_ROLE_NAME
 
 // Discord bot tokens and client IDs
 const TOKEN = process.env.PRIMARY_DISCORD_TOKEN || '';
