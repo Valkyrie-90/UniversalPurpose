@@ -7,12 +7,6 @@ import { registerButtons } from "./utils/helpers/registerButtons";
 import { registerModals } from "./utils/helpers/registerModals";
 import { testingConfig } from "./config";
 
-// Define the command structure
-interface Command {
-    data: ApplicationCommandData;
-    execute(message: any, args: string[]): void;
-}
-
 // Define and export the Discord client
 const client = new Client({
     intents: [
@@ -43,5 +37,5 @@ const flaggedTerms = loadFlaggedTerms();
 await client.login(testingConfig.token);
 
 export default client;
-export { Command, flaggedTerms };
+export { flaggedTerms };
 

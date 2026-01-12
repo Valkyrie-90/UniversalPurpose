@@ -29,11 +29,11 @@ function createGlobalBanEmbed(interaction: Interaction, args: string[]) : EmbedB
         .addFields(
             { name: 'User', value: `<@${args[0]}>`, inline: false },
             { name: 'Reason', value: args[1].length > 1024 ? `${args[1].slice(0, 1021)}...` : args[1], inline: false },
-            { name: 'Moderator', value: interaction.user.tag, inline: false },
+            { name: 'Moderator', value: `<@${interaction.user.id}>`, inline: false },
             { name: 'Origin Server', value: interaction.guild?.name ?? 'Direct Message', inline: false },
         )
         .setColor(0xff0000)
-        .setFooter({ text: `Issued by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+        .setFooter({ text: `Issued by ${interaction.user.tag}`, iconURL: interaction.client.user.displayAvatarURL() })
         .setTimestamp();
     
     return globalBanEmbed;

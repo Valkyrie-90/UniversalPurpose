@@ -1,5 +1,5 @@
 import { GuildMember, Interaction } from "discord.js";
-import fs from "fs";
+import { readServerConfig } from "../utils/jsonhelpers/readServerConfig";
 import path from "path";
 
 async function hasBanHammer(interaction: Interaction): Promise<boolean> {
@@ -9,24 +9,17 @@ async function hasBanHammer(interaction: Interaction): Promise<boolean> {
     const guildId = interaction.guild.id;
 
     // Read the config file for the guild
-    const guildPath = path.resolve(__dirname, `../guilds/`);
-    fs.readFile(`${guildPath}/${guildId}/settings/config.json`, 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return false;
-        }
-        try {
-            const config = JSON.parse(data);
-            const banHammerRoleID = config.globalBanRoleID;
-            const banHammer = interaction.guild?.roles.cache.get(banHammerRoleID);
-            if (banHammerRoleID && member.roles.cache.has(banHammer?.name ? banHammer.id : '')) {
-                return true;
-            }
-        } catch (parseErr) {
-            console.error(parseErr);
-            return false;
-        }
-    });
+    const guildPath = path.resolve(__dirname, "..", "guilds");
+    const serverConfig = readServerConfig(guildId);
+    if (!serverConfig) {
+        return false;
+    }
+
+    const globalBanRoleID = serverConfig.globalBanRoleID;
+    if (globalBanRoleID && member.roles.cache.has(globalBanRoleID)) {
+        return true;
+    }
+
     return false;
 }
 

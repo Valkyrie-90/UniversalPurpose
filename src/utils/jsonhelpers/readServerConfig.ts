@@ -1,7 +1,17 @@
 import { resolve } from "path";
 import { readFileSync, accessSync} from "fs";
 
-export function readServerConfig(guildId: string): any | null {
+type ServerConfig = {
+    logChannelID: string | null;
+    commandsChannelID: string | null;
+    botMasterRoleID: string | null;
+    globalBanRoleID: string | null;
+    privateGuild: boolean;
+    filteredChannelIDs: string[];
+    disabledCommands: string[];
+};
+
+function readServerConfig(guildId: string): ServerConfig | null {
     const configPath = resolve(__dirname, `../../guilds/${guildId}/settings/config.json`);
 
     try {
@@ -13,3 +23,5 @@ export function readServerConfig(guildId: string): any | null {
         return null;
     }
 }
+
+export { readServerConfig };
