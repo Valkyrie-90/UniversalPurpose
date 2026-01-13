@@ -6,7 +6,7 @@ import { Routes } from 'discord-api-types/v10';
 import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
 
 // Local imports
-import { testingConfig as config } from '../../config';
+import { config } from '../../config';
 
 import {
     registerSetupCommandGlobally,
