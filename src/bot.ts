@@ -5,7 +5,7 @@ import { registerCommands } from "./utils/commands/registerCommands";
 import { loadFlaggedTerms } from './utils/helpers/loadFlaggedTerms';
 import { registerButtons } from "./utils/helpers/registerButtons";
 import { registerModals } from "./utils/helpers/registerModals";
-import { testingConfig } from "./config";
+import { config } from "./config";
 
 // Define and export the Discord client
 const client = new Client({
@@ -34,7 +34,7 @@ await registerModals(client);
 const flaggedTerms = loadFlaggedTerms();
 
 // Log in to Discord with the bot token
-await client.login(testingConfig.token);
+await client.login(config.token);
 
 export default client;
 export { flaggedTerms };
