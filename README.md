@@ -21,12 +21,6 @@ This is a community project so it should be actively maintained until 2027 with 
 - create .env
 - make "PRIMARY_DISCORD_TOKEN=yourbottoken"
 - make "APPLICATION_ID=yourbotapplicationid"
-- in `bot.ts` change line 8: `import { testingConfig } from "./config";
-- to
-- `import { config } from "./config";
-- then on line 37 change `testingConfig.token`
-- to
-- `config.token`
 - then
 - bun run .
 
