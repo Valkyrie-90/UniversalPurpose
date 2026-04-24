@@ -1,5 +1,6 @@
-import { GuildMember, Interaction } from "discord.js";
+import { Interaction, type GuildMember} from "discord.js";
 import { env } from "@up/main/schema";
+import { readServerConfig } from "@up/main/utils/jsonhelpers/readServerConfig";
 
 function isBotMaster(interaction: Interaction, userId: string): boolean {
     if (!interaction.guild) return false;
@@ -7,6 +8,17 @@ function isBotMaster(interaction: Interaction, userId: string): boolean {
     const member = interaction.guild.members.cache.get(userId) ?? (interaction.member as GuildMember);
 
     if (!member || !member.roles?.cache) return false;
+
+    const serverConfig = readServerConfig(interaction.guild.id);
+    if (!serverConfig) {
+        return false;
+    }
+
+    const botMasterRoleID = serverConfig.botMasterRoleID;
+    if (botMasterRoleID && member.roles.cache.has(botMasterRoleID)) {
+        return true;
+    }
+
     return member.roles.cache.some((r: { name: string; }) => r.name === env.BOT_MASTER_ROLE_NAME);
 }
 
