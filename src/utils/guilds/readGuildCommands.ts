@@ -7,7 +7,7 @@ async function readGuildCommands(
     guildId: string,
     commands: RESTPostAPIApplicationCommandsJSONBody[]
 ): Promise<RESTPostAPIApplicationCommandsJSONBody[]> {
-    const commandsPath = path.resolve(__dirname, '..', '..', 'guilds', guildId, 'commands');
+    const commandsPath = path.resolve(`data/guilds/${guildId}/commands`);
     if (!fs.existsSync(commandsPath)) {
         console.warn(`Commands folder not found at ${commandsPath}`);
         return commands;

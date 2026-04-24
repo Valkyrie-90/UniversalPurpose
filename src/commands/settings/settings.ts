@@ -1,8 +1,8 @@
 import { MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommandInteraction } from 'discord.js';
-import { readServerConfig } from '../../utils/jsonhelpers/readServerConfig';
-import { isBotMaster } from '../../permissions/botMaster';
-import { writeServerConfig } from '../../utils/jsonhelpers/writeServerConfig';
+import { readServerConfig } from '@up/main/utils/jsonhelpers/readServerConfig';
+import { isBotMaster } from '@up/main/permissions/botMaster';
+import { writeServerConfig } from '@up/main/utils/jsonhelpers/writeServerConfig';
 
 type ServerConfig = {
     logChannelID: string | null;

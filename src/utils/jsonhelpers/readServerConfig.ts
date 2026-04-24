@@ -12,7 +12,7 @@ type ServerConfig = {
 };
 
 function readServerConfig(guildId: string): ServerConfig | null {
-    const configPath = resolve(__dirname, `../../guilds/${guildId}/settings/config.json`);
+    const configPath = resolve(`data/guilds/${guildId}/settings/config.json`);
 
     try {
         accessSync(configPath);

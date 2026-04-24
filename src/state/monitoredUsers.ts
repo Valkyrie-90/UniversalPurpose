@@ -1,9 +1,10 @@
 import fs from "fs";
 
 const monitoredUsers = new Set<string>();
+const filePath = "data/storage/monitored_users.json"
 
 function loadMonitoredUsersFromStorage(): void {
-    fs.readFile("./storage/monitored_users.json", "utf8", (err, data) => {
+    fs.readFile(filePath, "utf8", (err, data) => {
         if (err) {
             if (err.code === "ENOENT") {
                 // File does not exist, start with an empty monitored_users
@@ -33,7 +34,7 @@ function addToMonitoredUsers(userId: string): void {
 
     // Save the updated monitored_users to storage
     fs.writeFile(
-        "./storage/monitored_users.json",
+        filePath,
         JSON.stringify(Array.from(monitoredUsers)),
         (err) => {
             if (err) {
@@ -50,7 +51,7 @@ function removeFromMonitoredUsers(userId: string): void {
 
     // Save the updated monitored_users to storage
     fs.writeFile(
-        "./storage/monitored_users.json",
+        filePath,
         JSON.stringify(Array.from(monitoredUsers)),
         (err) => {
             if (err) {

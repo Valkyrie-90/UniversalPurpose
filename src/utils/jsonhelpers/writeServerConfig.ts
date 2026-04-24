@@ -1,7 +1,10 @@
+// External Imports
 import { resolve } from "path";
 import { writeFileSync, mkdirSync } from "fs";
 import { readFileSync } from "fs";
-import { refreshCommandsForGuild } from "../commands/refreshCommands";
+
+// Internal Imports
+import { refreshCommandsForGuild } from "@up/main/utils/commands"
 
 type ServerConfig = {
     logChannelID: string | null;
@@ -15,7 +18,7 @@ type ServerConfig = {
 
 export function writeServerConfig(guildId: string, config: ServerConfig): boolean {
     // Ensure the settings directory exists
-    const settingsDir = resolve(__dirname, `../../guilds/${guildId}/settings/`);
+    const settingsDir = resolve(`data/guilds/${guildId}/settings/`);
     try {
         mkdirSync(settingsDir, { recursive: true });
     } catch (err) {
@@ -24,7 +27,7 @@ export function writeServerConfig(guildId: string, config: ServerConfig): boolea
     }
 
     // Define the config file path
-    const configPath = resolve(__dirname, `../../guilds/${guildId}/settings/config.json`);
+    const configPath = resolve(`data/guilds/${guildId}/settings/config.json`);
 
     try {
         let existingConfig: ServerConfig | null = null;

@@ -1,15 +1,12 @@
 // built-in modules
-import fs from 'fs';
-import path from 'path';
-import { pathToFileURL } from 'url';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 
 // Relative imports for local modules
-import { testingConfig as config } from '../../config';
-import { readServerConfig } from '../jsonhelpers/readServerConfig';
-import { readGuildCommands } from '../guilds/readGuildCommands';
-import { collectBaseCommands } from './collectBaseCommands';
+import { defaultConfig } from '@up/main/config';
+import { readServerConfig } from '@up/main/utils/jsonhelpers/readServerConfig';
+import { readGuildCommands } from '@up/main/utils/guilds/readGuildCommands';
+import { collectBaseCommands } from '@up/main/utils/commands/collectBaseCommands';
 
 // Type imports
 import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
@@ -17,7 +14,7 @@ import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v
 async function refreshCommandsForGuild(guildId: string) {
 	const commands = await collectBaseCommands();
 
-	const rest: REST = new REST({ version: '10' }).setToken(config.token);
+	const rest: REST = new REST({ version: '10' }).setToken(defaultConfig.token);
 
 	try {
 		const allCommands = await readGuildCommands(guildId, [...commands]);
@@ -31,7 +28,7 @@ async function refreshCommandsForGuild(guildId: string) {
 			`Started refreshing ${guildCommands.length} application (/) commands for guild: ${guildId}`
 		);
 		const data = await rest.put(
-			Routes.applicationGuildCommands(config.applicationId, guildId),
+			Routes.applicationGuildCommands(defaultConfig.applicationId, guildId),
 			{
 				body: guildCommands
 			}

@@ -6,18 +6,18 @@ import { Routes } from 'discord-api-types/v10';
 import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
 
 // Local imports
-import { config } from '../../config';
+import { defaultConfig } from '@up/main/config';
 
 import {
     registerSetupCommandGlobally,
     collectBaseCommands,
     filterDisabledCommands
-} from './index';
+} from '@up/main/utils/commands/';
 
 import {
     readGuildIds,
     readGuildCommands
-} from "../../utils/guilds";
+} from "@up/main/utils/guilds";
 
 /**
 * Deploys commands to a single guild
@@ -31,7 +31,7 @@ async function deployToGuild(
 	const enabledCommands = filterDisabledCommands(allCommands, guildId);
 	
 	const data = await rest.put(
-		Routes.applicationGuildCommands(config.applicationId, guildId),
+		Routes.applicationGuildCommands(defaultConfig.applicationId, guildId),
 		{ body: enabledCommands }
 	);
 
@@ -52,7 +52,7 @@ async function deployCommands(): Promise<void> {
 		return;
 	}
 
-	const rest = new REST({ version: '10' }).setToken(config.token);
+	const rest = new REST({ version: '10' }).setToken(defaultConfig.token);
 
 	for (const guildId of guildIds) {
 		try {

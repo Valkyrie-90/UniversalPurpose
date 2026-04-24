@@ -1,9 +1,14 @@
 {
-  "compilerOptions": {
-    "target": "ES2021",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-  },
-  "include": ["src/*"]
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "es2022",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"baseUrl": "./",
+		"paths": {
+			"@up/main/*": ["src/*"],
+			"@up/data/*": ["data/*"]
+		}
+	},
+	"include": ["src/**/*", "data/**/*"],
 }
