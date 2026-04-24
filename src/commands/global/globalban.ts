@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, MessageFlags } from 'discord.js';
-import { hasBanHammer } from '../../permissions/globalBan';
-import { createGlobalBanEmbed } from '../../utils/embeds';
+import { hasBanHammer } from '@up/main/permissions/globalBan';
+import { createGlobalBanEmbed } from '@up/main/utils/embeds';
 import type { ChatInputCommandInteraction, Client, Guild } from 'discord.js';
 
 export default {

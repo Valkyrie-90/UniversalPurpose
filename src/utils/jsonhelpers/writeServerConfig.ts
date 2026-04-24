@@ -1,7 +1,10 @@
+// External Imports
 import { resolve } from "path";
 import { writeFileSync, mkdirSync } from "fs";
 import { readFileSync } from "fs";
-import { refreshCommandsForGuild } from "../commands/refreshCommands";
+
+// Internal Imports
+import { refreshCommandsForGuild } from "@up/main/utils/commands"
 
 type ServerConfig = {
     logChannelID: string | null;
