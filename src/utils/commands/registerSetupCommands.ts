@@ -2,10 +2,10 @@ import path from 'path';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { pathToFileURL } from 'url';
-import { testingConfig as config } from '../../config';
+import { defaultConfig } from '@up/main/config';
 
 async function registerSetupCommandGlobally() {
-    const rest: REST = new REST({ version: '10' }).setToken(config.token);
+    const rest: REST = new REST({ version: '10' }).setToken(defaultConfig.token);
     
     const setupCommandPath = path.resolve(__dirname, "..", "..", "commands", "setupguild.ts");
     try {
@@ -20,7 +20,7 @@ async function registerSetupCommandGlobally() {
         
         console.log(`Registering setupguild command globally.`);
         await rest.put(
-            Routes.applicationCommands(config.applicationId),
+            Routes.applicationCommands(defaultConfig.applicationId),
             { body: [command.data.toJSON()] }
         );
         console.log(`Successfully registered setupguild command globally.`);
