@@ -12,12 +12,12 @@ type ServerConfig = {
 };
 
 function getReportChannel(message: Message): string | null {
-    const config: ServerConfig | undefined = readServerConfig(message.guild!.id);
+    const config: ServerConfig | null = readServerConfig(message.guild!.id);
     return config ? config.logChannelID : null;
 }
 
 function getChannelsToFilter(message: Message) : string[] | null {
-    const config: ServerConfig | undefined = readServerConfig(message.guild!.id);
+    const config: ServerConfig | null = readServerConfig(message.guild!.id);
     return config ? config.filteredChannelIDs : null;
 }
 
