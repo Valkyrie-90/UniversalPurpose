@@ -1,17 +1,20 @@
 import { MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { isBotMaster } from '../permissions/botMaster'
+import { createNoPermsEmbed } from '../utils/embeds';
 import type { ChatInputCommandInteraction } from 'discord.js';
 
 export default {
     data: new SlashCommandBuilder()
         .setName('say')
         .setDescription('Send a message as the bot!')
-        .addStringOption(option =>
-            option.setName('message').setDescription('The message to send').setRequired(true)
+        .addStringOption(option => option
+            .setName('message')
+            .setDescription('The message to send').setRequired(true)
         ),
     async execute(interaction: ChatInputCommandInteraction) {
         if (!isBotMaster(interaction, interaction.user.id)) {
-            await interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
+            const noPermsEmbed = createNoPermsEmbed(interaction);
+            await interaction.reply({ embeds: [noPermsEmbed], flags: MessageFlags.Ephemeral });
             return;
         }
 
