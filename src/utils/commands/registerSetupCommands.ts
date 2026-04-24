@@ -7,7 +7,7 @@ import { defaultConfig } from '@up/main/config';
 async function registerSetupCommandGlobally() {
     const rest: REST = new REST({ version: '10' }).setToken(defaultConfig.token);
     
-    const setupCommandPath = path.resolve(__dirname, "..", "..", "commands", "setupguild.ts");
+    const setupCommandPath = path.resolve(__dirname, "../../commands/setupguild.ts");
     try {
         const mod = await import(pathToFileURL(setupCommandPath).toString());
         const command = (mod && (mod.default ?? mod)) as any;
