@@ -7,7 +7,8 @@
 		"baseUrl": "./",
 		"paths": {
 			"@up/main/*": ["src/*"],
+			"@up/data/*": ["data/*"]
 		}
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "data/**/*"],
 }

@@ -1,9 +1,10 @@
 import fs from "fs";
 
 const blacklist = new Set<string>();
+const filePath = "data/storage/blacklist.json"
 
 function loadBlacklistFromStorage(): void {
-    fs.readFile("./storage/blacklist.json", "utf8", (err, data) => {
+    fs.readFile(filePath, "utf8", (err, data) => {
         if (err) {
             if (err.code === "ENOENT") {
                 // File does not exist, start with an empty blacklist
@@ -33,7 +34,7 @@ function addToBlacklist(userId: string): void {
 
     // Save the updated blacklist to storage
     fs.writeFile(
-        "./storage/blacklist.json",
+        filePath,
         JSON.stringify(Array.from(blacklist)),
         (err) => {
             if (err) {
@@ -50,7 +51,7 @@ function removeFromBlacklist(userId: string): void {
 
     // Save the updated blacklist to storage
     fs.writeFile(
-        "./storage/blacklist.json",
+        filePath,
         JSON.stringify(Array.from(blacklist)),
         (err) => {
             if (err) {

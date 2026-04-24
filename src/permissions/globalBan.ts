@@ -1,6 +1,5 @@
 import { GuildMember, Interaction } from "discord.js";
-import { readServerConfig } from "../utils/jsonhelpers/readServerConfig";
-import path from "path";
+import { readServerConfig } from "@up/main/utils/jsonhelpers/readServerConfig";
 
 async function hasBanHammer(interaction: Interaction): Promise<boolean> {
     if (!interaction.guild) return false;
@@ -9,7 +8,6 @@ async function hasBanHammer(interaction: Interaction): Promise<boolean> {
     const guildId = interaction.guild.id;
 
     // Read the config file for the guild
-    const guildPath = path.resolve(__dirname, "..", "guilds");
     const serverConfig = readServerConfig(guildId);
     if (!serverConfig) {
         return false;

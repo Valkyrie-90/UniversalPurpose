@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 function readGuildIds() {
-    const guildsPath = path.resolve(__dirname, "..", "..", "guilds");
+    const guildsPath = path.resolve(`data/guilds`);
     if (!fs.existsSync(guildsPath)) {
         console.warn(`Guilds folder not found at ${guildsPath}`);
         return [];
