@@ -7,12 +7,6 @@ import { registerButtons } from "@up/main/utils/helpers/registerButtons";
 import { registerModals } from "@up/main/utils/helpers/registerModals";
 import { defaultConfig } from "@up/main/config";
 
-// Define the command structure
-interface Command {
-    data: ApplicationCommandData;
-    execute(message: any, args: string[]): void;
-}
-
 // Define and export the Discord client
 const client = new Client({
     intents: [
