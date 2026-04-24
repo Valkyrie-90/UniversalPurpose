@@ -1,5 +1,6 @@
-import { Interaction } from "discord.js";
+import { Interaction, type GuildMember} from "discord.js";
 import { env } from "@up/main/schema";
+import { readServerConfig } from "@up/main/utils/jsonhelpers/readServerConfig";
 
 function isBotMaster(interaction: Interaction, userId: string): boolean {
     if (!interaction.guild) return false;

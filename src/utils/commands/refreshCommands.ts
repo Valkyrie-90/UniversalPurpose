@@ -8,9 +8,6 @@ import { readServerConfig } from '@up/main/utils/jsonhelpers/readServerConfig';
 import { readGuildCommands } from '@up/main/utils/guilds/readGuildCommands';
 import { collectBaseCommands } from '@up/main/utils/commands/collectBaseCommands';
 
-// Type imports
-import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
-
 async function refreshCommandsForGuild(guildId: string) {
 	const commands = await collectBaseCommands();
 
