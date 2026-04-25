@@ -2,7 +2,7 @@
 import type { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
 
 // Local imports
-import { readServerConfig } from '../jsonhelpers/readServerConfig';
+import { readServerConfig } from '@up/main/utils/jsonhelpers/readServerConfig';
 
 /**
 * Filters out disabled commands for a specific guild
