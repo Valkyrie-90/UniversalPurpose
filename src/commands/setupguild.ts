@@ -5,8 +5,8 @@ import * as fs from 'fs';
 import path from 'path';
 
 // Relative imports for local modules
-import { writeServerConfig } from '../utils/jsonhelpers/writeServerConfig';
-import { createNoPermsEmbed, createSetupEmbed } from '../utils/embeds';
+import { writeServerConfig } from '@up/main/utils/jsonhelpers/writeServerConfig';
+import { createNoPermsEmbed, createSetupEmbed } from '@up/main/utils/embeds';
 
 type SetupInfo = {
     logChannelID: string | null;
@@ -49,7 +49,7 @@ export default {
         }
         
         // Define the guilds path
-        const guildsPath = path.resolve(__dirname, `../guilds/`);
+        const guildsPath = path.resolve("data/guilds");
 
         // Check if guild is already set up
         try {

@@ -70,7 +70,7 @@ export default {
         }
 
         // Read current guild settings
-        const guildInfo: ServerConfig = readServerConfig(interaction.guild?.id || '');
+        const guildInfo: ServerConfig = readServerConfig(interaction.guild?.id || '')!;
 
         switch (interaction.options.getSubcommand()) {
             case 'view':
