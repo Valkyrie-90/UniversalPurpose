@@ -1,10 +1,10 @@
-import { Client } from "discord.js";
+import { CustomClient } from "@up/main/types";
 import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
 
-async function registerButtons(client: Client): Promise<void> {
-    const dir = path.resolve(__dirname, '../buttons');
+async function registerButtons(client: CustomClient): Promise<void> {
+    const dir = path.resolve(__dirname, '../buttons/elements');
     fs.readdirSync(dir).forEach(async (file) => {
         if (file === 'index.ts' || file === 'index.js' || file === 'createActionRow.ts') return; // Skip certain files
         const filePath = path.join(dir, file);

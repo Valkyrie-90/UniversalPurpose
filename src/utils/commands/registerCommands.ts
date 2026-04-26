@@ -1,12 +1,12 @@
-import { Client } from "discord.js";
+import { CustomClient } from "@up/main/types";
 import { readdirSync } from "fs";
 import { join } from "path";
 import { readGuildIds } from "../guilds";
 
-async function registerCommandsForGuilds(client: Client): Promise<void> {
+async function registerCommandsForGuilds(client: CustomClient): Promise<void> {
     const guildIds = readGuildIds();
     for (const guildId of guildIds) {
-        const commandsPath = join(`data/guilds/${guildId}/commands`);
+        const commandsPath = join(__dirname, `../../../data/guilds/${guildId}/commands`);
         const commandFiles = readdirSync(commandsPath).filter((file) =>
             file.endsWith('.ts') || file.endsWith('.js')
         );
@@ -32,7 +32,7 @@ async function registerCommandsForGuilds(client: Client): Promise<void> {
     }
 }
 
-async function registerCommands(client: Client): Promise<void> {
+async function registerCommands(client: CustomClient): Promise<void> {
     const commandsPath = join(__dirname, "..", "..", "commands");
     const commandFiles = readdirSync(commandsPath, { recursive: true }).filter((file) =>
         typeof file === "string" && file.endsWith(".ts")

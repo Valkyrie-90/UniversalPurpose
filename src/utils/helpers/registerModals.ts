@@ -1,9 +1,9 @@
-import { Client } from "discord.js";
+import type { CustomClient } from "@up/main/types";
 import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
 
-async function registerModals(client: Client): Promise<void> {
+async function registerModals(client: CustomClient): Promise<void> {
     const dir = path.resolve(__dirname, '../modals');
     fs.readdirSync(dir).forEach(async (file) => {
         if (file === 'index.ts' || file === 'index.js' || file === 'createActionRow.ts') return; // Skip certain files

@@ -7,6 +7,7 @@ import { loadFlaggedTerms } from '@up/main/utils/helpers/loadFlaggedTerms';
 import { registerButtons } from "@up/main/utils/helpers/registerButtons";
 import { registerModals } from "@up/main/utils/helpers/registerModals";
 import { defaultConfig } from "@up/main/config";
+import { registerMenus } from "@up/main/utils/helpers/registerMenus";
 
 
 // Define and export the Discord client
@@ -25,6 +26,7 @@ await deployCommands();
 await registerEvents(client);
 await registerButtons(client);
 await registerModals(client);
+await registerMenus(client)
 
 // Load flagged terms from storage
 const flaggedTerms = loadFlaggedTerms();
