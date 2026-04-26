@@ -1,6 +1,6 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, Interaction } from 'discord.js';
-import { sendMessageUserId } from '../helpers/customIdHelper';
-import { sendMessageModal } from '../modals/';
+import { sendMessageUserId } from '../../helpers/customIdHelper';
+import { sendMessageModal } from '../../modals';
 
 function sendMessageButton(userId: string): ButtonBuilder {
     const button = new ButtonBuilder()
