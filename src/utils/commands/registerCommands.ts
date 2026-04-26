@@ -33,7 +33,7 @@ async function registerCommandsForGuilds(client: Client): Promise<void> {
 }
 
 async function registerCommands(client: Client): Promise<void> {
-    const commandsPath = join(__dirname, "../../commands");
+    const commandsPath = join(__dirname, "..", "..", "commands");
     const commandFiles = readdirSync(commandsPath, { recursive: true }).filter((file) =>
         typeof file === "string" && file.endsWith(".ts")
     );

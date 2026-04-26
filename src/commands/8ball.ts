@@ -2,7 +2,15 @@ import { SlashCommandBuilder } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 
 export default {
-    data: new SlashCommandBuilder().setName('8ball').setDescription('Test your luck with the magic 8ball!').addStringOption(option => option.setName('question').setDescription('The question you want to ask the magic 8ball').setRequired(true)),
+    data: new SlashCommandBuilder()
+        .setName('8ball')
+        .setDescription('Test your luck with the magic 8ball!')
+        .addStringOption(option => 
+            option
+                .setName('question')
+                .setDescription('The question you want to ask the magic 8ball')
+                .setRequired(true)
+        ),
     async execute(interaction: ChatInputCommandInteraction) {
         const responses = [
             "It is certain.",

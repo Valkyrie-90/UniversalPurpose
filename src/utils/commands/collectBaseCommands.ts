@@ -5,7 +5,7 @@ import { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
 
 async function collectBaseCommands(): Promise<RESTPostAPIApplicationCommandsJSONBody[]> {
 	const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
-	const foldersPath = path.resolve(__dirname, "../../commands");
+	const foldersPath = path.resolve(__dirname, "..", "..", "commands");
 	if (!fs.existsSync(foldersPath)) {
 		console.warn(`Commands folder not found at ${foldersPath}`);
 		return commands;
