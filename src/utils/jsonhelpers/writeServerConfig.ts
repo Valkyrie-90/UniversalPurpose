@@ -5,18 +5,9 @@ import { readFileSync } from "fs";
 
 // Internal Imports
 import { refreshCommandsForGuild } from "@up/main/utils/commands"
+import { SetupInfo } from "@up/main/types";
 
-type ServerConfig = {
-    logChannelID: string | null;
-    commandsChannelID: string | null;
-    botMasterRoleID: string | null;
-    globalBanRoleID: string | null;
-    privateGuild: boolean;
-    filteredChannelIDs: string[];
-    disabledCommands: string[];
-};
-
-export function writeServerConfig(guildId: string, config: ServerConfig): boolean {
+export function writeServerConfig(guildId: string, config: SetupInfo): boolean {
     // Ensure the settings directory exists
     const settingsDir = resolve(`data/guilds/${guildId}/settings/`);
     try {
@@ -30,7 +21,7 @@ export function writeServerConfig(guildId: string, config: ServerConfig): boolea
     const configPath = resolve(`data/guilds/${guildId}/settings/config.json`);
 
     try {
-        let existingConfig: ServerConfig | null = null;
+        let existingConfig: SetupInfo | null = null;
         try {
             const fileContent = readFileSync(configPath, 'utf8');
             existingConfig = JSON.parse(fileContent);

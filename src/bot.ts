@@ -1,4 +1,5 @@
-import { Client, GatewayIntentBits, Collection, ApplicationCommandData } from "discord.js";
+import { GatewayIntentBits } from "discord.js";
+import { CustomClient } from "@up/main/types";
 import { registerEvents } from "@up/main/utils/helpers/registerEvents";
 import { deployCommands } from "@up/main/utils/commands/deployCommands";
 import { registerCommands } from "@up/main/utils/commands/registerCommands";
@@ -6,9 +7,11 @@ import { loadFlaggedTerms } from '@up/main/utils/helpers/loadFlaggedTerms';
 import { registerButtons } from "@up/main/utils/helpers/registerButtons";
 import { registerModals } from "@up/main/utils/helpers/registerModals";
 import { defaultConfig } from "@up/main/config";
+import { registerMenus } from "@up/main/utils/helpers/registerMenus";
+
 
 // Define and export the Discord client
-const client = new Client({
+const client = new CustomClient({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
@@ -17,18 +20,13 @@ const client = new Client({
     ],
 });
 
-// Initialize the commands collection
-client.commands = new Collection();
-client.buttons = new Collection();
-client.events = new Collection();
-client.modals = new Collection();
-
 // Load commands and register events
 await registerCommands(client);
 await deployCommands();
 await registerEvents(client);
 await registerButtons(client);
 await registerModals(client);
+await registerMenus(client)
 
 // Load flagged terms from storage
 const flaggedTerms = loadFlaggedTerms();

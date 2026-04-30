@@ -17,4 +17,15 @@ function sendMessageUserId(customId: string): string | null {
     return parts.length > 1 ? parts[1] : null;
 }
 
+/**
+ * @param customId either `ticketCreationMenu` or `ticketActionMenu`
+ * 
+ * 
+ * @returns either `["ticketCreationMenu", "channelId"]` or `["ticketActionMenu", "ownerId", "userId", "channelId"]`
+ */
+function getTicketIds(customId: string): string[] | null {
+    const parts = parseCustomId(customId);
+    return parts.length > 1 ? parts : null;
+}
+
 export { parseCustomId, timeoutUserId, deleteMessageId, sendMessageUserId };
