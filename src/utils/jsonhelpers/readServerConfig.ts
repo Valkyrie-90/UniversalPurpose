@@ -1,17 +1,8 @@
 import { resolve } from "path";
 import { readFileSync, accessSync} from "fs";
+import { SetupInfo } from "@up/main/types";
 
-type ServerConfig = {
-    logChannelID: string | null;
-    commandsChannelID: string | null;
-    botMasterRoleID: string | null;
-    globalBanRoleID: string | null;
-    privateGuild: boolean;
-    filteredChannelIDs: string[];
-    disabledCommands: string[];
-};
-
-function readServerConfig(guildId: string): ServerConfig | null {
+function readServerConfig(guildId: string): SetupInfo | null {
     const configPath = resolve(`data/guilds/${guildId}/settings/config.json`);
 
     try {

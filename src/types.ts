@@ -44,3 +44,15 @@ export class CustomClient extends Client {
         super(options);
     }
 }
+
+// Setup Info Type
+export type SetupInfo = {
+    logChannelID: string | null;
+    commandsChannelID: string | null;
+    botMasterRoleID: string | null;
+    globalBanRoleID: string | null;
+    privateGuild: boolean;
+    filteredChannelIDs: string[];
+    welcomeChannelID: string | null
+    disabledCommands: string[];
+};

@@ -7,16 +7,8 @@ import path from 'path';
 // Relative imports for local modules
 import { writeServerConfig } from '@up/main/utils/jsonhelpers/writeServerConfig';
 import { createNoPermsEmbed, createSetupEmbed } from '@up/main/utils/embeds';
+import { SetupInfo } from '@up/main/types';
 
-type SetupInfo = {
-    logChannelID: string | null;
-    commandsChannelID: string | null;
-    botMasterRoleID: string | null;
-    globalBanRoleID: string | null;
-    privateGuild: boolean;
-    filteredChannelIDs: string[];
-    disabledCommands: string[];
-};
 
 export default {
     data: new SlashCommandBuilder()
@@ -25,8 +17,13 @@ export default {
         .addStringOption(option => option
             .setName("filtered-channels")
             .setDescription("Enter a comma delimited list of channel IDs to be filtered, type 'none' to disable.")
-            .setMaxLength(100)
+            .setMaxLength(200)
             .setRequired(true)
+        )
+        .addStringOption(option => option
+            .setName("welcome-channel")
+            .setDescription("Enter the channel id of your welcome channel.")
+            .setRequired(false)
         ),
     async execute(interaction: ChatInputCommandInteraction) {
         const perms = interaction.memberPermissions;
@@ -177,6 +174,8 @@ export default {
             filteredChannelIDs = filteredChannelsOption.split(",").map(id => id.trim());
         }
 
+        const welcomeChannel = interaction.options.getString("welcome-channel", false)
+
         // Prepare setup info for the embed
         const setupInfo: SetupInfo = {
             logChannelID: logChannel?.id || null,
@@ -185,6 +184,7 @@ export default {
             globalBanRoleID: banHammerRole?.id || null,
             privateGuild: false,
             filteredChannelIDs: filteredChannelIDs,
+            welcomeChannelID: welcomeChannel,
             disabledCommands: [],
         };
 
