@@ -30,6 +30,18 @@ export default {
 
         const embed = GuildMemberJoinEmbed(member)
 
+        try {
+            const visitorRole = member.roles.cache.find(
+                (r) => r.id === "1499736138640789544"
+            )
+
+            if (!visitorRole) throw new Error("visitor role doesn't exist")
+
+            member.roles.add(visitorRole)
+        } catch (e) {
+            console.error(e)
+        }
+        
         welcomeChannel.send({
             content: `<@${member.id}>`,
             embeds: [embed]
