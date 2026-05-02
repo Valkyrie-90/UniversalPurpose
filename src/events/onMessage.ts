@@ -5,12 +5,56 @@ import { createFlaggedMessageEmbed } from '../utils/embeds';
 import type { Message } from 'discord.js';
 import { deleteMessageButton, sendMessageButton, timeoutUserButton, createActionRow } from '../utils/buttons/';
 
+const inviteRegex = /(https?:\/\/)?(www\.)?(discord\.gg|discord\.com\/invite)\/\S+/i;
+const inviteTracker = new Map<string, { count: number; lastTime: number }>();
+
 // Define the event handler for message creation
 export default {
     name: Events.MessageCreate,
     async execute(message: Message) {
         // ignore bot messages
-        if (!message.author) return;
+        if (!message.author.bot) return;
+
+        const now = Date.now();
+        const TIME_WINDOW = 5 * 60; // 5 minutes
+
+        if (inviteRegex.test(message.content)) {
+            const userId = message.author.id;
+
+            const data = inviteTracker.get(userId);
+
+            if (!data) {
+                inviteTracker.set(userId, { count: 1, lastTime: now });
+            } else {
+                // Reset count if outside time window
+                if (now - data.lastTime > TIME_WINDOW) {
+                    inviteTracker.set(userId, { count: 1, lastTime: now });
+                } else {
+                    data.count += 1;
+                    data.lastTime = now;
+                    inviteTracker.set(userId, data);
+                }
+            }
+
+            const updated = inviteTracker.get(userId)!;
+
+            await message.delete().catch(() => {});
+
+            if (updated.count > 2) {
+                try {
+                    const member = message.member;
+                    if (member) {
+                        await member.timeout(10 * 60, "Repeated Discord invite links");
+                    }
+                } catch (err) {
+                    console.error("Failed to timeout user:", err);
+                }
+
+                inviteTracker.delete(userId); // reset after punishment
+            }
+
+            return;
+        }
 
         // Check if the message is in a channel that needs to be filtered
         getChannelsToFilter(message)?.forEach(async (channelId) => {
